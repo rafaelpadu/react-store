@@ -26,6 +26,8 @@ import PhoneIcon from "@material-ui/icons/Phone";
 import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import MenuInferior from "./MenuInferior";
+import { Link } from "react-router-dom";
+import LoginComponent from "./LoginComponent";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -33,12 +35,12 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
     },
     appBar: {
-      height: "170px",
+      height: "125px",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
+      backgroundColor: "#FFF",
     },
-    toolBar: {},
     menuButton: {
       marginRight: theme.spacing(2),
     },
@@ -49,14 +51,16 @@ const useStyles = makeStyles((theme: Theme) =>
       },
       position: "relative",
       right: "14rem",
+      color: "#2B3445",
     },
     search: {
       position: "relative",
       right: "5rem",
-      borderRadius: theme.shape.borderRadius,
-      background: alpha(theme.palette.common.white, 0.15),
+      borderRadius: "1200px",
+      border: "1px solid #2B3445",
+      background: alpha(theme.palette.common.white, 0.8),
       "&:hover": {
-        backgroundColor: alpha(theme.palette.common.white, 0.25),
+        backgroundColor: alpha(theme.palette.common.white, 0.1),
       },
       marginRight: theme.spacing(2),
       marginLeft: 0,
@@ -77,15 +81,15 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: "center",
     },
     inputRoot: {
-      color: "inherit",
       width: "500px",
+      color: "#2B33445",
     },
     inputInput: {
       padding: theme.spacing(2.1, 1, 1, 0),
       // vertical padding + font size from searchIcon
       paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
       transition: theme.transitions.create("width"),
-
+      color: "#2B33445",
       width: "100%",
       [theme.breakpoints.down("md")]: {
         width: "30ch",
@@ -108,14 +112,15 @@ const useStyles = makeStyles((theme: Theme) =>
     initialBar: {
       width: "100%",
       height: "1.6rem",
-      backgroundColor: "rgba(0, 0, 0, 0.3)",
       position: "fixed",
       display: "flex",
       justifyContent: "center",
+      backgroundColor: "#2B3445",
+      zIndex: 5,
     },
     initialBarTexts: {
       display: "flex",
-      color: "rgba(255, 255, 255, 0.9)",
+      color: "#fff",
       fontSize: "15px",
       marginTop: "3px",
     },
@@ -138,7 +143,8 @@ const useStyles = makeStyles((theme: Theme) =>
       color: "rgba(255, 255, 255, 0.9)",
     },
     icon: {
-      fontSize: "32pt",
+      fontSize: "32px",
+      color: "#2B3445",
     },
   })
 );
@@ -148,11 +154,26 @@ const Header: React.FunctionComponent = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isMenuOpen = Boolean(anchorEl);
 
+  const [openLoginModal, setOpenLoginModal] = useState(false);
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+    const token: string | null = localStorage.getItem("token");
+    if (token) {
+      console.log("token");
+      setAnchorEl(event.currentTarget);
+    } else {
+      console.log("token2");
+
+      handleLoginModalOpen();
+    }
   };
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+  const handleLoginModalOpen = () => {
+    setOpenLoginModal(true);
+  };
+  const handleLoginModalClose = () => {
+    setOpenLoginModal(false);
   };
   const renderMenu = (
     <Menu
@@ -193,13 +214,15 @@ const Header: React.FunctionComponent = () => {
         </div>
       </div>
       <AppBar position="static" className={classes.appBar}>
-        <Toolbar className={classes.toolBar}>
-          <Typography className={classes.title} variant="h6" noWrap>
-            Confeitaria Doces e Travessuras
-          </Typography>
+        <Toolbar>
+          <Link style={{ textDecoration: "none" }} to="/home">
+            <Typography className={classes.title} variant="h6" noWrap>
+              Confeitaria Doces e Travessuras
+            </Typography>
+          </Link>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
-              <SearchIcon />
+              <SearchIcon style={{ color: "#2B3445", width: "30px" }} />
             </div>
             <InputBase
               placeholder="Buscar Produto..."
@@ -209,7 +232,10 @@ const Header: React.FunctionComponent = () => {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label=" sh ow 4 new mails" color="inherit">
+            <IconButton
+              aria-label=" sh ow 4 new mails"
+              style={{ color: "#2B3445" }}
+            >
               <Badge color="secondary">
                 <ShoppingCartIcon className={classes.icon} />
               </Badge>
@@ -233,6 +259,10 @@ const Header: React.FunctionComponent = () => {
         </Toolbar>
       </AppBar>
       {renderMenu}
+      <LoginComponent
+        openLogin={openLoginModal}
+        handleClose={() => handleLoginModalClose()}
+      />
       <MenuInferior />
     </div>
   );

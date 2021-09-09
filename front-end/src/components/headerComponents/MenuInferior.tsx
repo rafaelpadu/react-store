@@ -13,6 +13,9 @@ const useStyles = makeStyles({
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
+    backgroundColor: "#FFF",
+    boxShadow: "0px 10px 16px rgb(43 52 69 / 10%)",
+    zIndex: 1,
   },
   appBarIconS: {
     height: "100%",
@@ -20,10 +23,6 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-  },
-  icon: {
-    height: "30px",
-    width: "30px",
   },
 });
 const MenuInferior: React.FunctionComponent = (props) => {

@@ -7,6 +7,7 @@ interface Props {
   IconType?: OverridableComponent<SvgIconTypeMap<{}, "svg">>;
   srcImg?: string;
 }
+
 const MenuComponent: React.FunctionComponent<Props> = ({
   itens,
   IconType,
@@ -18,13 +19,17 @@ const MenuComponent: React.FunctionComponent<Props> = ({
     setAnchorEl(event.currentTarget);
   };
   const handleMenuClose = () => setAnchorEl(null);
-  const listItens = itens.map((item: string) => {
-    return <MenuItem onClick={handleMenuClose}>{item}</MenuItem>;
+  const listItens = itens.map((item: string, index: number) => {
+    return (
+      <MenuItem key={index} onClick={handleMenuClose}>
+        {item}
+      </MenuItem>
+    );
   });
   return (
     <div>
       <IconButton onClick={handleButtonIn}>
-        {IconType && <IconType width="30" height="30" fontSize="large" />}
+        {IconType && <IconType style={{ fontSize: "30px" }} />}
         {srcImg && <img src={srcImg} alt="" width="30" height="30" />}
       </IconButton>
       <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={handleMenuClose}>
